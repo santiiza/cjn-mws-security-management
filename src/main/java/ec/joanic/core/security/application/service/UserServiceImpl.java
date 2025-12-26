@@ -38,17 +38,17 @@ public class UserServiceImpl implements UserService {
         return opeLog.debug("|--> Service - getUserById started - id=[{}]", id)
                 .then(reactiveValidator.validateNotNull(id, COD_00006))
                 .flatMap(validId -> userPort.findUserById(validId)
-                        .flatMap(company -> opeLog.debug("<--| Service - getUserById finished successfully: id=[{}]", validId)
-                                .thenReturn(company)));
+                        .flatMap(user -> opeLog.debug("<--| Service - getUserById finished successfully: id=[{}]", validId)
+                                .thenReturn(user)));
     }
 
     @Override
     public Mono<Void> createUser(String user, @Valid UserDto userDto) {
-        return opeLog.debug("|--> Service - createCompany started: company={}", userDto)
+        return opeLog.debug("|--> Service - createUser started: user={}", userDto)
                 .then(reactiveValidator.validateNotBlank(user, COD_00012))
                 .flatMap(validUser ->
                         userPort.createUser(validUser, userDto)
-                                .doOnSuccess(save -> opeLog.debug("<--| Service - createCompany finished successfully")));
+                                .doOnSuccess(save -> opeLog.debug("<--| Service - createUser finished successfully")));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
                 .flatMap(validUser -> reactiveValidator.validateNotNull(id, COD_00006)
                         .flatMap(validId -> userPort.updateUser(validUser, validId, userDto)
                                 .flatMap(update ->
-                                        opeLog.debug("<--| Service - updateCompany finished successfully: id=[{}] updated", id)
+                                        opeLog.debug("<--| Service - updateUser finished successfully: id=[{}] updated", id)
                                                 .then())));
     }
 }
